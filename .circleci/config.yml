@@ -19,7 +19,6 @@ jobs:
           name: Compile Project
           command: pio run
 
-
 workflows:
   master:
     jobs:
