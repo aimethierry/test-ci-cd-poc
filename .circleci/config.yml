@@ -7,19 +7,6 @@ jobs:
     executor: python/default
     steps:
       - checkout  # checkout source code to working directory
-      - save_cache:
-          # Cache PlatformIO packages for current project
-          key: deps9-{{ .Branch }}-{{ arch }}
-          paths:
-            - "~/.platformio"
-      - restore_cache: 
-
-      - python/install-packages:
-          pkg-manager: pip
-          # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
-          app-dir: /test-ci-cd-poc
-          pip-dependency-file: requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
-      
       - run:
           name: Install PlatformIO
           command: pip install --upgrade platformio
