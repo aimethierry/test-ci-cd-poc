@@ -7,7 +7,6 @@ jobs:
     executor: python/default
     steps:
       - checkout  # checkout source code to working directory
-
       - run:
           name: Install PlatformIO
           command: pip install --upgrade platformio
