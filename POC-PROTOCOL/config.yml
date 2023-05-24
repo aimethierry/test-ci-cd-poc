@@ -4,17 +4,26 @@ orbs:
 
 jobs:
   build:
+    parameters:
+      ci_src:
+        type: string
     executor: python/default
+    environment:
+      PLATFORMIO_CI_SRC: << parameters.ci_src >>
     steps:
-      - checkout  # checkout source code to working directory
+      - checkout
       - run:
           name: Install PlatformIO
-          command: pip install --upgrade platformio
+          command: pip install -U platformio
       - run:
-          name: Compile Project
-          command: pio run
+          name: Compile << parameters.ci_src >>
+          command: pio ci --board=<ID_1> --board=<ID_2> --board=<ID_N>
 
 workflows:
   main:
     jobs:
-      - build
+      - build:
+          matrix:
+            parameters:
+              ci_src: ["C:\Users\ttuyishime\Desktop\Grad\Git\github-test\POC-PROTOCOL\src\main.c", 
+              "C:\Users\ttuyishime\Desktop\Grad\Git\github-test\POC-PROTOCOL\platformio.ini", "C:\Users\ttuyishime\Desktop\Grad\Git\github-test\POC-PROTOCOL"]
