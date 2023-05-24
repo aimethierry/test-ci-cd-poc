@@ -12,6 +12,8 @@ jobs:
           key: deps9-{{ .Branch }}-{{ arch }}
           paths:
             - "~/.platformio"
+      - restore_cache: 
+
       - python/install-packages:
           pkg-manager: pip
           # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
