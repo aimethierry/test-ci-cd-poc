@@ -18,9 +18,9 @@ jobs:
           command: whoami
       
       - run: 
-          name: Install USB UTIL 
-          command: sudo apt-get install usbutils
-      
+          name: CHECK CONNECTED USB 
+          command: ls /dev/ttyUSB*
+
       - run:
           name: Compile Project
           command: pio run
