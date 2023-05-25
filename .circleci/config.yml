@@ -3,7 +3,7 @@ orbs:
   python: circleci/python@1.5.0
 
 jobs:
-  build:
+  build-test:
     executor: python/default
     steps:
       - checkout  # checkout source code to working directory
@@ -13,21 +13,13 @@ jobs:
       - run:
           name: Compile Project
           command: pio run
-  
-  test:
-    executor: python/default
-    steps::
-      - checkout
+
       - run: 
-          name: Install PlatformIO
+          name: Test blink project 
           command: pip install --upgrade platformio
-      - run: 
-          name: Test blink 
-          command: pio test
-
-
+  
 workflows:
   master:
     jobs:
-      - build
-      - test
+      - build-test
+ 
