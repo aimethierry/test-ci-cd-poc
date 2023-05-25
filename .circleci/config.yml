@@ -15,8 +15,8 @@ jobs:
           command: pio run
 
       - run: 
-          name: Test blink project 
-          command: pio test -v
+          name: Test CI
+          command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
   
 
 workflows:
