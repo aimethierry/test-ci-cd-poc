@@ -22,8 +22,9 @@ jobs:
       #     command: ls /dev/ttyUSB*
 
       - run:
-          name: Test Project
-          command: pio test -v
+          name: Check ciricle ci 
+          command: cd /media/circleci 
+          command: ls
   
 
 workflows:
