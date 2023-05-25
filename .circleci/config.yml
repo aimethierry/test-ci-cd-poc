@@ -16,8 +16,9 @@ jobs:
 
       - run: 
           name: Test blink project 
-          command: pip install --upgrade platformio
+          command: pio test
   
+
 workflows:
   master:
     jobs:
