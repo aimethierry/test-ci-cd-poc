@@ -16,17 +16,15 @@ jobs:
           name: Test who iam 
           # command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
           command: whoami
-      
+    
       # - run: 
       #     name: CHECK CONNECTED USB 
       #     command: ls /dev/ttyUSB*
 
-      - run:
-          name: Check ciricle ci 
-          command: cd /media/circleci 
-      - run:
-          name: Dsiplay media 
-          command: ls
+      # - run:
+      #     name: RUN TEST ON WINDOWS 
+      #     command: pio test --upload-port COM4
+      
   
 
 workflows:
