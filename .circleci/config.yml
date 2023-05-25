@@ -24,6 +24,8 @@ jobs:
       - run:
           name: Check ciricle ci 
           command: cd /media/circleci 
+      - run:
+          name: Dsiplay media 
           command: ls
   
 
