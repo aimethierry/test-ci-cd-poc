@@ -17,13 +17,13 @@ jobs:
           # command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
           command: whoami
       
-      - run: 
-          name: CHECK CONNECTED USB 
-          command: ls /dev/ttyUSB*
+      # - run: 
+      #     name: CHECK CONNECTED USB 
+      #     command: ls /dev/ttyUSB*
 
       - run:
-          name: Compile Project
-          command: pio run
+          name: Test Project
+          command: pio test -v
   
 
 workflows:
