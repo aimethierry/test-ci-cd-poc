@@ -16,7 +16,7 @@ jobs:
 
       - run: 
           name: Test blink project 
-          command: pio run
+          command: pio test --upload-port /dev/ttyUSB0
   
 
 workflows:
