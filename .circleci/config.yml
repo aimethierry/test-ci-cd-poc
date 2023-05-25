@@ -17,7 +17,7 @@ jobs:
   test:
     executor: python/default
     steps::
-      -checkout
+      - checkout
       - run: 
           name: Install PlatformIO
           command: pip install --upgrade platformio
