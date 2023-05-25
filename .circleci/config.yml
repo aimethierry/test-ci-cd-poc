@@ -19,7 +19,7 @@ jobs:
       
       - run: 
           name: Check usb
-          command: df -Th | grep media
+          command: lsusb
 
       - run:
           name: Compile Project
