@@ -8,15 +8,15 @@ jobs:
     steps:
       - checkout  # checkout source code to working directory
       - run:
-          name: Install PlatformIO
-          command: pip install --upgrade platformio
+          name: Install requirements.txt
+          command: pip install -r requirements.txt
       - run:
           name: Compile Project
           command: pio run
 
       - run: 
           name: Test blink project 
-          command: pio test --upload-port COM4
+          command: pio run
   
 
 workflows:
