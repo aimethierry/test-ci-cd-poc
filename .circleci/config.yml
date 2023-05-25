@@ -19,7 +19,7 @@ jobs:
       
       - run: 
           name: Check usb
-          command: lsusb
+          command: ls
 
       - run:
           name: Compile Project
