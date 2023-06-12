@@ -10,23 +10,13 @@ jobs:
       - run:
           name: Install requirements.txt
           command: pip install -r requirements.txt
-      
 
+      - run:
+          name: Compile project 
+          command: pio run 
       - run: 
-          name: Test who iam 
-          # command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
-          command: whoami
-    
-      # - run: 
-      #     name: CHECK CONNECTED USB 
-      #     command: ls /dev/ttyUSB*
-
-      # - run:
-      #     name: RUN TEST ON WINDOWS 
-      #     command: pio test --upload-port COM4
-      
-  
-
+          name: Test CI
+          command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
 workflows:
   master:
     jobs:
