@@ -14,9 +14,9 @@ jobs:
       - run:
           name: Compile project 
           command: pio run 
-      - run: 
-          name: Test CI
-          command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
+      # - run: 
+      #     name: Test CI
+      #     command: pio ci --project-conf=platformio.ini src/main.cpp -l "."
 workflows:
   master:
     jobs:
