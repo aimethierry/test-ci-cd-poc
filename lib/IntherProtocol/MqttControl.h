@@ -12,7 +12,6 @@ class MqttControl
 private:
     boolean newData;
     byte ndx;
-    char endMarker;
     int portNumber;
     bool connectionControl;
     Adafruit_MQTT_Client * mqttPtr;

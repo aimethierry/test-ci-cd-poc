@@ -1,6 +1,8 @@
-#include "Controller.h"
+#include "IntherProtocol.h"
+using namespace IntherProtcol;
 
-Controller::Controller(const char *clientIp, const char *ServerPort, int MqttPort)
+
+IntherProtcol::Controller::Controller(const char *clientIp, const char *ServerPort, int MqttPort)
 {
     this->cl = new ClientControl(clientIp, MqttPort);
     this->rs = Rs485Control();
@@ -16,13 +18,12 @@ Controller::Controller(const char *clientIp, const char *ServerPort, int MqttPor
     // this->sub = Adafruit_MQTT_Subscribe()
 }
 
-
 ////////////////////////////////////////////
 // init pin  for rs485
 // setup init for ethernet
 // connect to mqtt broker
 ////////////////////////////////////////////
-bool Controller::Init(int nre, int de, Stream *stream)
+bool IntherProtcol::Controller::Init(int nre, int de, Stream *stream)
 {
     bool resp = false;
     // setup RS485
@@ -33,7 +34,7 @@ bool Controller::Init(int nre, int de, Stream *stream)
     // SETUP Ethernet
     if (EthernetSetup())
     {
-        
+
         // setup RS485
         RsInit();
         // check if you can change this to use the one for clientControl
@@ -53,11 +54,12 @@ bool Controller::Init(int nre, int de, Stream *stream)
 ////////////////////////////////////////////
 // FUNCTION THAT SEND MESSAGE TO THE BROKER
 ////////////////////////////////////////////
-bool Controller::SendMessage(char *payload, char *topic, int qos)
+bool IntherProtcol::Controller::SendMessage(char *payload, char *topic, int qos)
 {
     bool resp = false;
     // send JSON message
-    if (this->dt.ValidateJsonMessage((payload)) == true && qos <= MAX_QOS){
+    if (this->dt.ValidateJsonMessage((payload)) == true && qos <= MAX_QOS)
+    {
         if (this->mqt.PublishMqttMessage(topic, payload, qos))
         {
             resp = true;
@@ -70,7 +72,7 @@ bool Controller::SendMessage(char *payload, char *topic, int qos)
 ////////////////////////////////////////////
 // FUNCTION THAT GET MESSAGE TO THE BROKER
 ////////////////////////////////////////////
-bool Controller::GetMessage(Adafruit_MQTT_Subscribe *subName, char *bufferData, char *topic)
+bool IntherProtcol::Controller::GetMessage(Adafruit_MQTT_Subscribe *subName, char *bufferData, char *topic)
 {
     bool resp = false;
     // clear Buffer to avoid overwriting on existing message
@@ -86,12 +88,12 @@ bool Controller::GetMessage(Adafruit_MQTT_Subscribe *subName, char *bufferData, 
     return resp;
 }
 
-void Controller::MqttSubscribe(Adafruit_MQTT_Subscribe *subName)
+void IntherProtcol::Controller::MqttSubscribe(Adafruit_MQTT_Subscribe *subName)
 {
     this->mqt.Subscribe(subName);
 }
 
-void Controller::ClearBuffer(char *bufferArray)
+void IntherProtcol::Controller::ClearBuffer(char *bufferArray)
 {
     memset(bufferArray, 0, sizeof(bufferArray));
 }
@@ -99,7 +101,7 @@ void Controller::ClearBuffer(char *bufferArray)
 ////////////////////////////////////////////
 // check payload size
 ////////////////////////////////////////////
-bool Controller::checkSizePayload(char *buffer)
+bool IntherProtcol::Controller::checkSizePayload(char *buffer)
 {
     int payloadLen = this->dt.GetPayloadSize(buffer);
 
@@ -111,16 +113,16 @@ bool Controller::checkSizePayload(char *buffer)
     return false;
 }
 
-bool Controller::ValidatePayload(char *buffer)
+bool IntherProtcol::Controller::ValidatePayload(char *buffer)
 {
     return this->dt.ValidateJsonMessage((buffer));
 }
-bool Controller::GetMqttPayload(Adafruit_MQTT_Subscribe *subName, char *bufferData)
+bool IntherProtcol::Controller::GetMqttPayload(Adafruit_MQTT_Subscribe *subName, char *bufferData)
 {
     return (this->mqt.GetMessage(subName, bufferData));
 }
 
-void Controller::RsInit()
+void IntherProtcol::Controller::RsInit()
 {
     this->rs.Init(this->stream);
     // check if serial data is assigned before doing anything else
@@ -133,7 +135,7 @@ void Controller::RsInit()
     }
 }
 
-bool Controller::EthernetSetup()
+bool IntherProtcol::Controller::EthernetSetup()
 {
     this->cl->SetUpEthernet();
     if (this->cl->CheckConnection())
@@ -143,7 +145,7 @@ bool Controller::EthernetSetup()
     return false;
 }
 
-bool Controller::SendRS485Message(char *message)
+bool IntherProtcol::Controller::SendRS485Message(char *message)
 {
     bool resp = false;
     this->rs.pinControl(this->rsNre, HIGH);
@@ -154,17 +156,22 @@ bool Controller::SendRS485Message(char *message)
     return resp;
 }
 
-bool Controller::ReceiveRs485Data(char *bufferReturn)
+bool IntherProtcol::Controller::ReceiveRs485Data(char *bufferReturn)
 {
     bool resp = false;
-    // every message received must be sent again
+
     if (this->rs.GetMessage(bufferReturn))
     {
-        resp = this->rs.SendMessage(bufferReturn);
+        // check if message received is json
+        if (this->dt.ValidateJsonMessage(bufferReturn))
+        {
+            resp = true;
+        }
     }
     return resp;
 }
-Controller::~Controller()
+
+IntherProtcol::Controller::~Controller()
 {
     delete (this->cl);
 }
@@ -174,26 +181,36 @@ Adafruit_MQTT_Client *Controller::GetMqttClient()
     return (this->mqt.GetMqttClient());
 }
 
-
-Adafruit_MQTT_Subscribe Controller::GetSubscribe(char * topic, int qos){
+Adafruit_MQTT_Subscribe Controller::GetSubscribe(char *topic, int qos)
+{
     int Subqos = qos;
-    if(Subqos > MAX_QOS){
+    if (Subqos > MAX_QOS)
+    {
         Subqos = 0;
     }
     return (Adafruit_MQTT_Subscribe(this->mqtt, (const char *)topic, Subqos));
 }
 
+
+/*
+    This part is used to control if the connection to the broker 
+    is set correctly, if return is false check the wiring or check the broker 
+    ip address and the port if are corrct 
+*/
 bool Controller::MqttConnect()
 {
     return (this->mqt.MqttConnect());
 }
 
-bool Controller::GetArray(char  * bufferesp, char * message, char * keyword){
+bool Controller::GetArray(char *bufferesp, char *message, char *keyword)
+{
     return this->dt.GetArray(bufferesp, message, keyword);
 }
-bool Controller::GetString(char * bufferesp, char * message, char * keyword){
-    return  this->dt.GetString(bufferesp, message, keyword);
+bool Controller::GetString(char *bufferesp, char *message, char *keyword)
+{
+    return this->dt.GetString(bufferesp, message, keyword);
 }
-int  Controller::GetInt(char * message, char * keyword){
+int Controller::GetInt(char *message, char *keyword)
+{
     return this->dt.GetInt(message, keyword);
 }

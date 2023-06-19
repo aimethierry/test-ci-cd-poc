@@ -6,7 +6,6 @@ MqttControl::MqttControl()
     this->connectionControl = false;
     this->newData = false;
     this->ndx = 0;
-    this->endMarker = '}';
 }
 
 MqttControl::~MqttControl()
@@ -76,17 +75,24 @@ bool MqttControl::CheckConnection()
 
 bool MqttControl::MqttConnect()
 {
+    // Serial.println("5");
     int8_t ret;
     if (this->mqttPtr->connected())
     {
+        // Serial.println("True");
         return true;
-    }
-    while ((ret = this->mqttPtr->connect()) != 0)
-    {
+    }else{
         this->mqttPtr->disconnect();
-        return false;
+        delay(1000);
+        this->mqttPtr->connect();
     }
-   return true;
+    //while ((ret = this->mqttPtr->connect()) != 0)
+    //{
+    //    this->mqttPtr->disconnect();
+    //    return false;
+    //}
+    // Serial.println("6");
+   return false;
 }
 
 

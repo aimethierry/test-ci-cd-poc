@@ -10,16 +10,11 @@ class ClientControl{
     private: 
         EthernetServer * server;
         bool ServerControl;
-        
         IPAddress serverIp; 
-        boolean newData;
-        byte ndx;
-        char endMarker;
         int portNumber;
         IPAddress ip; 
         char * ipAddress;
         EthernetClient * cl;
-
 
     public:
         ClientControl(const char * ipAddress, int portNumber);

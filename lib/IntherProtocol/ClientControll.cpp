@@ -7,9 +7,6 @@ ClientControl::ClientControl(const char *ipAddress, int portN)
     this->ip.fromString(ipAddress);
     this->portNumber = -1;
     this->ServerControl = false;
-    this->newData = false;
-    this->ndx = 0;
-    this->endMarker = '}';
     this->cl = NULL;
     this->portNumber = portN;
 }

@@ -14,6 +14,7 @@ class Rs485Control
         boolean newData;
         byte ndx;
         char endMarker;
+        char startMarker;
     public: 
         Rs485Control();
         ~Rs485Control();

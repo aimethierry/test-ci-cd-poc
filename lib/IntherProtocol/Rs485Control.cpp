@@ -7,6 +7,7 @@ Rs485Control::Rs485Control()
     this->newData = false;
     this->ndx = 0;
     this->endMarker = '}';
+    this->startMarker = '{';
 }
 
 void Rs485Control::Init(Stream * stream)
@@ -47,17 +48,15 @@ bool Rs485Control::SendMessage(char *message)
 
 bool Rs485Control::GetMessage(char *buffer)
 {
-    // Serial.println("RS GetMessage");
-    // clear message first 
-    memset(buffer, 0, sizeof(buffer));
     char rc;
     if (this->serialControl == true)
     {
         while (this->Ser->available() > 0)
         {
             rc = Ser->read();
-            if (this->ndx == 0)
+            if (rc == startMarker)
             {
+                this->ndx = 0;
                 memset(buffer, 0, sizeof(buffer));
             }
 
@@ -67,10 +66,7 @@ bool Rs485Control::GetMessage(char *buffer)
                 this->ndx++;
                 this->newData = true;
                 break;
-            }
-
-            if (rc != endMarker)
-            {
+            }else{
                 buffer[this->ndx] = rc;
                 this->ndx++;
             }
@@ -78,6 +74,11 @@ bool Rs485Control::GetMessage(char *buffer)
 
         if (this->newData == true)
         {
+            // clear everything after the message to avoid overwrighting 
+            //the actual  message 
+            for(int i = ndx; i < sizeof(buffer); i++){
+                buffer[this->ndx] = 0;
+            }
             this->ndx = 0;
             this->newData = false;
             int messLen = strlen(buffer);
