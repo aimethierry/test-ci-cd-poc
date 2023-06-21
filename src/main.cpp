@@ -11,6 +11,7 @@ char *RESPSTATUS = "/status";
 char *PUBTOPIC = "/picklight/pub";
 char *JsonRespKey = "status";
 char *JsonRespval = "true";
+const char * MqttCientName = "IntherProtocol";
 
 // #define ARRAY_size 256
 char Mqttbuff[MESSAGE_LENGTH] = {0};
@@ -18,7 +19,7 @@ char buffer[MESSAGE_LENGTH] = {0};
 
 // include Intherprotocol namespace
 using namespace IntherProtcol;
-IntherProtcol::Controller ctrl = IntherProtcol::Controller(IP, AIO_SERVER, AIO_SERVERPORT);
+IntherProtcol::Controller ctrl = IntherProtcol::Controller(IP, AIO_SERVER, AIO_SERVERPORT, MqttCientName);
 auto picklightTest = ctrl.GetSubscribe(PICKLIGHTTOPIC, QOS);
 auto ledstripTest2 = ctrl.GetSubscribe(LEDSTRIPTOPIC, QOS);
 

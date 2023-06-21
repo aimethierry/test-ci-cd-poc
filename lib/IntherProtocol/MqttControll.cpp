@@ -12,11 +12,9 @@ MqttControl::~MqttControl()
 {
 }
 
-
-
-bool MqttControl::Init(EthernetClient * ethclient, const char * mqttServer, int mqttPort){
+bool MqttControl::Init(EthernetClient * ethclient, const char * mqttServer, int mqttPort, const char * clientName){
     bool resp = true;
-    Adafruit_MQTT_Client cl = Adafruit_MQTT_Client(ethclient, mqttServer, mqttPort, "IntherProtocol");
+    Adafruit_MQTT_Client cl = Adafruit_MQTT_Client(ethclient, mqttServer, mqttPort, clientName);
     this->mqttPtr =  (&cl);
     if(!this->mqttPtr->ping()){
         this->connectionControl = false;

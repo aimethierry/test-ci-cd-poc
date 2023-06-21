@@ -2,7 +2,7 @@
 using namespace IntherProtcol;
 
 
-IntherProtcol::Controller::Controller(const char *clientIp, const char *ServerPort, int MqttPort)
+IntherProtcol::Controller::Controller(const char *clientIp, const char *ServerPort, int MqttPort, const char * clientName)
 {
     this->cl = new ClientControl(clientIp, MqttPort);
     this->rs = Rs485Control();
@@ -15,6 +15,7 @@ IntherProtcol::Controller::Controller(const char *clientIp, const char *ServerPo
     this->ServerPort = (char *)ServerPort;
     this->PickLightController = false;
     this->sub = NULL;
+    this->clientName = (char *)clientName;
     // this->sub = Adafruit_MQTT_Subscribe()
 }
 
@@ -41,7 +42,7 @@ bool IntherProtcol::Controller::Init(int nre, int de, Stream *stream)
         EthernetClient ethClient;
 
         int PORT = this->cl->GetPortNumber();
-        this->mqt.Init(&ethClient, (const char *)(this->ServerPort), PORT);
+        this->mqt.Init(&ethClient, (const char *)(this->ServerPort), PORT, (const char *)this->clientName);
         if (this->mqt.CheckConnection())
         {
             resp = true;

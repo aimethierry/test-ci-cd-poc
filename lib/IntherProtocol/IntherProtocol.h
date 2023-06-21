@@ -50,9 +50,10 @@ namespace IntherProtcol
         Adafruit_MQTT_Subscribe *sub;
         char *ServerPort;
         bool PickLightController;
+        char * clientName;
 
     public:
-        Controller(const char *clientIp, const char *ServerPort, int MqttPort);
+        Controller(const char *clientIp, const char *ServerPort, int MqttPort, const char * clientName);
 
         ~Controller();
         bool Init(int nre, int de, Stream *stream);

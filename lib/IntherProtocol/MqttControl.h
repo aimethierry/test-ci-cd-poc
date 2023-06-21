@@ -24,7 +24,7 @@ public:
     bool PublishMqttMessage(char * topic, char * message, int qos);
     bool GetMessage(Adafruit_MQTT_Subscribe *subName, char * buffer);
     
-    bool Init(EthernetClient * ethclient, const char * mqttServer, int mqttPort);
+    bool Init(EthernetClient * ethclient, const char * mqttServer, int mqttPort, const char * clientName);
     bool CheckConnection();
     bool MqttConnect();
     Adafruit_MQTT_Client * GetMqttClient();
